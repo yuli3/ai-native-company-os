@@ -1,0 +1,19 @@
+# 자격증명·로컬 설정은 절대 커밋하지 않는다 (env.example 만 추적)
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*-credentials.json
+service-account*.json
+
+# 로컬 산출물
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# 회사 고유 데이터(설치 시 생성) — 스타터엔 미포함
+company-brain/
+goals.json
+!templates/goals.example.json

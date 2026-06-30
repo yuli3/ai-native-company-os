@@ -1,0 +1,20 @@
+{
+  "goals": [
+    { "id": "growth", "title": "<회사명> 매출·인지도 성장", "status": "active",
+      "subgoals": [
+        { "title": "주 3회 SNS 콘텐츠 자동 초안", "done": false },
+        { "title": "리뷰·문의 응대 자동 분류", "done": false },
+        { "title": "월간 경쟁사·트렌드 리포트", "done": false }
+      ] },
+    { "id": "ops", "title": "운영 자동화(반복업무 줄이기)", "status": "active",
+      "subgoals": [
+        { "title": "재고/예약 일일 점검 알림", "done": false },
+        { "title": "주간 보고 자동 생성", "done": false }
+      ] },
+    { "id": "autonomy", "title": "자율 운영 단계 올리기", "status": "active",
+      "subgoals": [
+        { "title": "1단계 검증 게이트 가동", "done": false },
+        { "title": "2단계 트렌드 정찰 cron", "done": false }
+      ] }
+  ]
+}
