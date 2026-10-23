@@ -1,0 +1,26 @@
+# 상시 승인 목록 예시. 복사해서 approvals.yaml로 쓰고, 오너만 고칩니다.
+# 에이전트는 B등급 행동 전에 이 파일을 읽습니다. 만료된 항목은 무시합니다.
+# 상시 승인은 C등급(배포·공개·발송·결제·삭제·계정 변경)을 낮추지 못합니다.
+
+owner: "<오너 이름>"
+updated: 2026-10-23
+
+approvals:
+  - id: game-feel-draft-prs
+    scope:
+      repos: ["game-site"]
+      paths: ["src/components/games/**", "src/lib/games/**"]
+    actions:
+      - "게임 연출·이펙트 변경"
+      - "draft PR 안에서 의존성 제거"
+    limit: draft-pr        # draft-pr | branch | merge
+    expires: 2026-12-31
+    note: "머지와 배포는 건별로 묻는다"
+
+  - id: docs-and-reports
+    scope:
+      repos: ["*"]
+      paths: ["docs/**", "reports/**"]
+    actions: ["문서 작성과 갱신"]
+    limit: branch
+    expires: 2027-03-31
