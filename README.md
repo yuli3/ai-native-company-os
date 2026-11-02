@@ -17,6 +17,7 @@
 3. `templates/agent-roster.md` 로 AI 직원(역할) 구성, `templates/goals.example.json` 로 목표 보드 시작.
 4. `manuals/` 에서 본인 업종 매뉴얼 선택(요식업·소매업·서비스업 템플릿).
 5. `playbooks/autonomy-playbook.md` 로 자율 단계 점진 활성화.
+6. 에이전트를 여럿 쓴다면 `governance/README.md` 로 공통 헌법과 보고서 검사를 붙입니다.
 
 ## 구성
 | 폴더 | 내용 |
@@ -26,6 +27,7 @@
 | `templates/` | 에이전트 역할 · 목표 보드 · `.env` 예시 |
 | `playbooks/` | 자율 운영 플레이북(자율 1/2/3단계) |
 | `checklists/` | 도입 · 운영 · 보안 체크리스트 |
+| `governance/` | 에이전트 헌법 · 자율 등급 · 행동 교정 카탈로그 · 보고서 검사 도구 |
 
 ## 안전 기본값
 - 배포·결제·민감 작업은 **사람 승인 게이트** 유지(자율 모드에서도).
