@@ -1,0 +1,20 @@
+{
+  "$comment": "Copy to .claude/settings.json at the root of your company repo (or ~/.claude/settings.json for every repo). Adjust the paths.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/en/claude-code/hooks/git-guard.sh\"" }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
