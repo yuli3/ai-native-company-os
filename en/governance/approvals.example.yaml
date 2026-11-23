@@ -1,0 +1,30 @@
+# Standing approvals. Copy to approvals.yaml; only the founder edits it.
+# Agents read this before any grade B action. Expired entries are ignored.
+# A standing approval never lowers an action the founder excluded below.
+
+owner: "<founder>"
+updated: 2026-11-24
+
+approvals:
+  - id: merge-on-green
+    scope:
+      repos: ["*"]
+      paths: ["**"]
+    actions:
+      - "merge your own code PR when CI is green and there are no conflicts"
+    limit: merge          # draft-pr | branch | merge
+    excludes:
+      - "payments and checkout"
+      - "legal or tax calculations"
+      - "production data deletes"
+      - "account and ad-network settings"
+    expires: 2027-03-31
+    note: "report after merging"
+
+  - id: docs-and-reports
+    scope:
+      repos: ["*"]
+      paths: ["docs/**", "reports/**"]
+    actions: ["write and update documents"]
+    limit: branch
+    expires: 2027-03-31

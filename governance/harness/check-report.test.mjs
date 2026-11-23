@@ -71,3 +71,38 @@ test("two idle reports in a row are a stall; one is not", () => {
   assert.equal(checkStall([good, idle]).stalled, false);
   assert.equal(checkStall([good, idle, idle]).stalled, true);
 });
+
+const goodEn = `# Swap effects
+
+## Progress
+Objective: game feel
+This round: confetti swapped in 18 places, draft PR
+
+## Decisions
+1. Question: Merge it?
+   Options: A merge / B hold
+   Recommend: A, gates pass
+   Default: wait for an answer
+
+## What I did
+- https://github.com/acme/game/pull/19 confetti swap
+- Verified: npm test passes
+
+## Not done
+- Device playtest — on hold, unblocks when the phone is connected, owner: founder
+
+## Next
+- Agent: address review
+`;
+
+test("an English report in the same shape passes", () => {
+  const r = checkReport(goodEn);
+  assert.equal(r.ok, true, JSON.stringify(r.findings));
+  assert.equal(r.findings.length, 0, JSON.stringify(r.findings));
+  assert.equal(r.stats.questions, 1);
+});
+
+test("English questions without recommendation and default are flagged", () => {
+  const r = checkReport(goodEn.replace(/   Recommend:.*\n   Default:.*\n/, ""));
+  assert.ok(r.findings.some((f) => f.pattern === "질문 형식"), JSON.stringify(r.findings));
+});

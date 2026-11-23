@@ -24,18 +24,18 @@ export const LIMITS = {
 const REQUIRED_SECTIONS = [
   { id: "progress", label: "목표 대비 진척", re: /^#{2,3}\s*(목표 대비 진척|progress)/im },
   { id: "decisions", label: "결정 요청", re: /^#{2,3}\s*(결정 요청|decisions?)/im },
-  { id: "done", label: "한 것", re: /^#{2,3}\s*(한 것|done)/im },
+  { id: "done", label: "한 것", re: /^#{2,3}\s*(한 것|done|what i did)/im },
   { id: "next", label: "다음 행동", re: /^#{2,3}\s*(다음 행동|next)/im },
 ];
 
 const ARTIFACT_RE = /(https:\/\/github\.com\/[^\s)]+\/(pull|commit)\/[\w]+|\b[0-9a-f]{7,12}\b(?![0-9a-f])|`[\w./-]+\.(ts|tsx|js|mjs|md|json|astro|py)`|\bPR\s?#\d+)/gi;
-const PENDING_RE = /(승인\s?대기|결재\s?대기|보류|미실행|미구현|not_collected|pending approval|on hold)/gi;
-const UNBLOCK_RE = /(해제 조건|담당|unblock|owner:|→)/i;
-const HEDGE_RE = /(가설이지|가설입니다|보장하지 않|단정하지 않|단정 금지|미검증|별개(다|이며|입니다)|아님\b|일반화(는|하지) 않|인증하지 않|등식이 아니)/g;
+const PENDING_RE = /(승인\s?대기|결재\s?대기|보류|미실행|미구현|not_collected|pending approval|awaiting approval|on hold|not run)/gi;
+const UNBLOCK_RE = /(해제 조건|담당|unblock|owner:|→|unblocks? when)/i;
+const HEDGE_RE = /(가설이지|가설입니다|보장하지 않|단정하지 않|단정 금지|미검증|별개(다|이며|입니다)|아님\b|일반화(는|하지) 않|인증하지 않|등식이 아니|not guaranteed|cannot guarantee|this is a hypothesis|unverified|not necessarily)/gi;
 const HASH_RE = /\b[0-9a-f]{64}\b/gi;
-const QUESTION_RE = /^\s*(\d+\.|-)\s*질문\s*[:：]/gim;
-const RECOMMEND_RE = /추천\s*[:：]/g;
-const DEFAULT_RE = /기본값\s*[:：]/g;
+const QUESTION_RE = /^\s*(\d+\.|-)\s*(질문|question)\s*[:：]/gim;
+const RECOMMEND_RE = /(추천|recommend(ed|ation)?)\s*[:：]/gi;
+const DEFAULT_RE = /(기본값|default)\s*[:：]/gi;
 
 function count(text, re) {
   return (text.match(re) ?? []).length;
@@ -60,7 +60,7 @@ export function checkReport(text, limits = LIMITS) {
   const artifacts = count(text, ARTIFACT_RE);
   const questions = count(text, QUESTION_RE);
   const progress = section(text, REQUIRED_SECTIONS[0].re);
-  const noProgress = /이번 진척\s*[:：]\s*(없음|none)/i.test(progress);
+  const noProgress = /(이번 진척|this round)\s*[:：]\s*(없음|none)/i.test(progress);
 
   if (artifacts === 0 && questions === 0) {
     add("error", "문서로 대체", "산출물 링크(PR·커밋·파일)도 결정 요청도 없습니다. 헌법 제3조.");
@@ -82,7 +82,7 @@ export function checkReport(text, limits = LIMITS) {
 
   // Option lists inside a decision request ("선택지: A / B 보류") are choices, not pending work.
   const pendingOne = new RegExp(PENDING_RE.source, "i");
-  const pendingLines = text.split("\n").filter((line) => pendingOne.test(line) && !/^#/.test(line) && !/선택지\s*[:：]/.test(line));
+  const pendingLines = text.split("\n").filter((line) => pendingOne.test(line) && !/^#/.test(line) && !/(선택지|options)\s*[:：]/i.test(line));
   const unblocked = pendingLines.filter((line) => UNBLOCK_RE.test(line)).length;
   const bare = pendingLines.length - unblocked;
   if (bare > 0) {
